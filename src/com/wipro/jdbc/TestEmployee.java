@@ -1,9 +1,6 @@
 package com.wipro.jdbc;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.Scanner;
 
 public class TestEmployee {
@@ -21,20 +18,42 @@ public class TestEmployee {
             TestEmployee obj = new TestEmployee();
 
             Scanner s=new Scanner(System.in);
-            System.out.println("Enter employee details :");
-            System.out.println(" name :");
-            String name=s.next();
-            System.out.println(" salary :");
-            String salary=s.next();
-            System.out.println(" email :");
-            String email=s.next();
-            System.out.println(" address :");
-            String address=s.next();
+
+//            System.out.println("Enter employee details :");
+//            System.out.println(" name :");
+//            String name=s.next();
+//            System.out.println(" salary :");
+//            String salary=s.next();
+//            System.out.println(" email :");
+//            String email=s.next();
+//            System.out.println(" address :");
+//            String address=s.next();
+
+//            Employee emp = new Employee(name, salary, email, address);
+//            obj.addEmployee(emp); ;
+
+            //delete record
+//
+//            System.out.println("Delete record of one employee from table: ");
+//            System.out.println("ID: ");
+//            int id = s.nextInt();
+//
+//            obj.deleteEmployee(id);
+
+            //update record
+
+//            System.out.print("Enter id: ");
+//            int uid = s.nextInt();
+//            System.out.print("Enter mail to update: ");
+//            String EMAIL = s.next();
+//            obj.updateEmployee(uid, EMAIL);
+
+            //fetch Retrieve details
+
+            System.out.println("Details of Employees from table\n");
+            obj.fetchEmployee();
 
 
-
-            Employee emp = new Employee(name, salary, email, address);
-            obj.addEmployee(emp); ;
 
         }catch(Exception e){
             System.out.println(e);
@@ -53,15 +72,34 @@ public class TestEmployee {
         System.out.println("employee is added!");
     }
 
+    void deleteEmployee(int id)throws SQLException{
 
-//    void updateEmployee(Employee obj){
-//
-//    }
-//    void deleteEmployee(Employee obj){
-//
-//    }
-//    void fetchEmployee(Employee obj){
-//
-//    }
+        PreparedStatement statement = con_obj.prepareStatement("delete from employee where id = "+id);
+        statement.executeUpdate();
+        System.out.println("Employee is deleted.");
 
+    }
+    void updateEmployee(int id, String Email)throws SQLException{
+
+        PreparedStatement statement = con_obj.prepareStatement("update employee set email=? where id=? ");
+        statement.setString(1, Email);
+        statement.setInt(2, id);
+
+        statement.executeUpdate();
+        System.out.println("Employee is updated.");
+
+    }
+
+    void fetchEmployee()throws SQLException {
+
+        ResultSet re = con_obj.createStatement().executeQuery("select * from employee");
+        while (re.next()) {
+            String name = re.getString("name");
+            String Salary = re.getString("salary");
+            int ID = re.getInt("id");
+
+            System.out.print(ID+ " : "+ name +" - "+ Salary + "\n");
+
+        }
+    }
 }
